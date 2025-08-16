@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Tips</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Orbitron for Title, Inter for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a; /* Near black background */
+            color: #f1f1f1;
+        }
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .header-bg {
+            background: linear-gradient(to right, #1a1a1a, #000000);
+            border-bottom: 2px solid #22c55e; /* Grass Green border */
+        }
+        .card-bg {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+        .card-bg:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-button.active {
+            color: #22c55e; /* Green text for active tab */
+            border-bottom-color: #22c55e;
+        }
+        .tab-button:not(.active):hover {
+            color: #4ade80;
+        }
+        .status-won { background-color: #16a34a; color: white; }
+        .status-lost { background-color: #dc2626; color: white; }
+        .status-pending { background-color: #6b7280; color: white; }
+        
+        .telegram-button {
+            background-color: #229ED9; /* Telegram blue */
+            box-shadow: 0 4px 14px 0 rgba(0, 118, 163, 0.39);
+        }
+        .telegram-button:hover {
+            background-color: #1a8cd8;
+        }
+        .vip-card {
+             background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+             border: 1px solid #22c55e;
+             box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Section -->
+    <header class="header-bg shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center h-16"> <!-- Centered the title -->
+                <div class="flex items-center">
+                    <h1 class="text-2xl md:text-3xl font-orbitron font-extrabold text-green-500 tracking-wider">
+                        NINJA TIPS
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Tab Navigation -->
+        <div class="mb-6 border-b border-gray-700">
+            <nav class="flex justify-center -mb-px space-x-6" aria-label="Tabs">
+                <button id="all-tips-tab" class="tab-button active text-base font-semibold py-3 px-1">
+                    <i class="fas fa-globe mr-2"></i>Free Tips
+                </button>
+                <button id="vip-tips-tab" class="tab-button text-base font-semibold py-3 px-1">
+                    <i class="fas fa-star mr-2"></i>VIP Tips
+                </button>
+            </nav>
+        </div>
+
+        <!-- Tips Sections -->
+        <div id="tips-content">
+            <!-- Free Tips Section -->
+            <section id="all-tips-section">
+                <div id="all-tips-container" class="space-y-6">
+                    <!-- Tips grouped by date will be dynamically inserted here -->
+                </div>
+            </section>
+
+            <!-- VIP Tips Section -->
+            <section id="vip-tips-section" class="hidden">
+                 <div class="vip-card rounded-lg p-6 text-center mb-6">
+                    <i class="fas fa-crown text-4xl text-yellow-400 mb-3"></i>
+                    <h2 class="text-2xl font-bold font-orbitron text-white mb-2">VIP Member Access</h2>
+                    <p class="text-gray-300 text-sm max-w-xl mx-auto mb-5">
+                        VIP အဖွဲ့ဝင်ဖြစ်ခြင်းဖြင့် ပိုမိုတိကျသေချာသော ခန့်မှန်းချက်များ၊ အကောင်းဆုံး Odds များနှင့် အထူးပွဲစဉ်များကို နေ့စဉ် ရယူလိုက်ပါ။
+                    </p>
+                    <a href="https://t.me/your_telegram_username" target="_blank" class="telegram-button text-white font-bold py-2 px-5 rounded-lg inline-flex items-center">
+                        <i class="fab fa-telegram-plane mr-2"></i>
+                        <span>Join VIP Now</span>
+                    </a>
+                </div>
+                <div id="vip-accumulator-container" class="mt-6">
+                    <!-- VIP Accumulator Table will be dynamically inserted here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 mt-10 py-5">
+        <div class="container mx-auto text-center text-gray-500 text-sm">
+            <p>&copy; <span id="year"></span> Ninja Tips. All Rights Reserved.</p>
+            <p class="text-xs mt-1">ဘောလုံးခန့်မှန်းချက်များသည် 참고용으로만 အသုံးပြုသင့်ပါသည်။</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- MOCK DATA ---
+        const allTipsData = [
+          { date: "17 Aug 2025", league: "Spain La Liga", teams: "Barcelona vs Real Sociedad", tip: "Over 2.5 Goals", odds: "1.80", status: "PENDING" },
+          { date: "16 Aug 2025", league: "Germany Bundesliga", teams: "Bayern Munich vs Dortmund", tip: "Home Win", odds: "1.65", status: "PENDING" },
+          { date: "16 Aug 2025", league: "England Premier League", teams: "Arsenal vs Tottenham", tip: "Both Teams to Score", odds: "1.70", status: "PENDING" },
+          { date: "16 Aug 2025", league: "England Premier League", teams: "Chelsea vs Crystal Palace", tip: "W1", odds: "1.75", status: "WON" },
+          { date: "15 Aug 2025", league: "England Premier League", teams: "Man United vs Liverpool", tip: "Over 2.5 Goals", odds: "1.75", status: "WON" },
+          { date: "15 Aug 2025", league: "Spain La Liga", teams: "Atletico Madrid vs Sevilla", tip: "Home Win", odds: "1.90", status: "PENDING" },
+          { date: "14 Aug 2025", league: "Germany Bundesliga", teams: "Leverkusen vs Stuttgart", tip: "Both Teams to Score", odds: "1.60", status: "WON" },
+          { date: "14 Aug 2025", league: "Italy Serie A", teams: "Roma vs Lazio", tip: "Draw", odds: "3.10", status: "LOST" },
+          { date: "14 Aug 2025", league: "France Ligue 1", teams: "Lyon vs Marseille", tip: "Over 2.5 Goals", odds: "1.85", status: "WON" },
+          { date: "13 Aug 2025", league: "Netherlands Eredivisie", teams: "Ajax vs PSV", tip: "Away Win", odds: "2.50", status: "PENDING" }
+        ];
+        
+        const vipTipsData = [
+            { date: '16 Aug 2025', league: 'UEFA Champions League', teams: 'Real Madrid vs Man City', tip: 'Real Madrid to Qualify', odds: '2.50', status: 'WON' },
+            { date: '16 Aug 2025', league: 'Italy Serie A', teams: 'AC Milan vs Inter Milan', tip: 'Draw no Bet - Inter', odds: '1.80', status: 'WON' },
+        ];
+
+        // --- SCRIPT TO RENDER A SINGLE TIP CARD ---
+        function createTipCard(tip) {
+            let statusClass = '';
+            switch (tip.status.toUpperCase()) {
+                case 'WON': statusClass = 'status-won'; break;
+                case 'LOST': statusClass = 'status-lost'; break;
+                case 'PENDING': statusClass = 'status-pending'; break;
+            }
+            return `
+                <div class="card-bg rounded-lg p-3 flex items-center justify-between">
+                    <div class="w-2/5 text-left pr-2">
+                        <p class="text-xs text-gray-400 truncate"><i class="fas fa-trophy mr-1 text-green-500"></i>${tip.league}</p>
+                        <p class="font-bold text-sm text-white">${tip.teams}</p>
+                    </div>
+                    <div class="w-1/5 text-center">
+                        <p class="font-semibold text-sm text-green-500">${tip.tip}</p>
+                    </div>
+                    <div class="w-1/5 text-center">
+                        <p class="text-gray-300 font-bold text-base">${tip.odds}</p>
+                    </div>
+                    <div class="w-1/5 flex justify-end">
+                        <span class="${statusClass} text-xs font-bold px-2 py-0.5 rounded-full uppercase">${tip.status}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- SCRIPT FOR TAB SWITCHING & RENDERING ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const allTipsTab = document.getElementById('all-tips-tab');
+            const vipTipsTab = document.getElementById('vip-tips-tab');
+            const allTipsSection = document.getElementById('all-tips-section');
+            const vipTipsSection = document.getElementById('vip-tips-section');
+
+            // Function to render Free Tips grouped by date
+            function renderAllTips() {
+                const container = document.getElementById('all-tips-container');
+                container.innerHTML = ''; // Clear previous content
+                
+                const groupedTips = allTipsData.reduce((acc, tip) => {
+                    (acc[tip.date] = acc[tip.date] || []).push(tip);
+                    return acc;
+                }, {});
+
+                const sortedDates = Object.keys(groupedTips).sort((a, b) => new Date(b) - new Date(a));
+
+                sortedDates.forEach(date => {
+                    const dateSection = document.createElement('section');
+                    const tipsHTML = groupedTips[date].map(createTipCard).join('');
+                    
+                    dateSection.innerHTML = `
+                        <h2 class="text-base font-semibold text-gray-300 mb-2 pl-1">${date}</h2>
+                        <div class="space-y-3">
+                            ${tipsHTML}
+                        </div>
+                    `;
+                    container.appendChild(dateSection);
+                });
+            }
+
+            // Function to render VIP Accumulator Table
+            function renderVipAccumulator() {
+                const container = document.getElementById('vip-accumulator-container');
+                if(vipTipsData.length === 0) {
+                    container.innerHTML = `<p class="text-center text-gray-400">VIP ခန့်မှန်းချက်များ မရှိသေးပါ။</p>`;
+                    return;
+                }
+
+                const totalOdds = vipTipsData.reduce((acc, tip) => acc * parseFloat(tip.odds), 1);
+
+                const tableRows = vipTipsData.map(tip => `
+                    <tr class="border-b border-gray-700">
+                        <td class="py-3 px-2 text-xs text-gray-400">${tip.league}</td>
+                        <td class="py-3 px-2 text-sm font-semibold text-white">${tip.teams}</td>
+                        <td class="py-3 px-2 text-sm font-bold text-green-400 text-center">${tip.tip}</td>
+                        <td class="py-3 px-2 text-sm font-semibold text-white text-right">${tip.odds}</td>
+                    </tr>
+                `).join('');
+
+                container.innerHTML = `
+                    <div class="card-bg rounded-lg p-4">
+                        <h3 class="text-lg font-orbitron font-bold text-center mb-4 text-green-500">VIP Accumulator</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-full">
+                                <thead>
+                                    <tr class="text-left text-xs text-gray-400 uppercase">
+                                        <th class="pb-2 px-2 font-semibold">League</th>
+                                        <th class="pb-2 px-2 font-semibold">Match</th>
+                                        <th class="pb-2 px-2 font-semibold text-center">Tip</th>
+                                        <th class="pb-2 px-2 font-semibold text-right">Odds</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableRows}
+                                </tbody>
+                                <tfoot>
+                                    <tr class="border-t-2 border-green-500">
+                                        <td colspan="3" class="pt-3 px-2 text-base font-bold text-white text-right">Total Odds:</td>
+                                        <td class="pt-3 px-2 text-xl font-orbitron font-extrabold text-green-500 text-right">${totalOdds.toFixed(2)}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Tab click events
+            allTipsTab.addEventListener('click', () => {
+                allTipsTab.classList.add('active');
+                vipTipsTab.classList.remove('active');
+                allTipsSection.classList.remove('hidden');
+                vipTipsSection.classList.add('hidden');
+            });
+
+            vipTipsTab.addEventListener('click', () => {
+                vipTipsTab.classList.add('active');
+                allTipsTab.classList.remove('active');
+                vipTipsSection.classList.remove('hidden');
+                allTipsSection.classList.add('hidden');
+            });
+
+            // Initial render
+            renderAllTips();
+            renderVipAccumulator();
+            
+            // Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
+
+</body>
+  </html>
