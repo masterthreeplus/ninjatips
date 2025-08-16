@@ -140,25 +140,25 @@
     <script>
         // --- MOCK DATA ---
         const allTipsData = [
-          { date: "17 Aug 2025", league: "Spain La Liga", teams: "Barcelona vs Real Sociedad", tip: "Over 2.5 Goals", odds: "1.80", status: "PENDING" },
-          { date: "16 Aug 2025", league: "Germany Bundesliga", teams: "Bayern Munich vs Dortmund", tip: "Home Win", odds: "1.65", status: "PENDING" },
+          { date: "17 Aug 2025", league: "Spain La Liga", teams: "Barcelona vs Real Sociedad", tip: "Over 2.5", odds: "1.80", status: "PENDING" },
+          { date: "16 Aug 2025", league: "Germany Bundesliga", teams: "Bayern Munich vs Dortmund", tip: "W1", odds: "1.65", status: "PENDING" },
           { date: "16 Aug 2025", league: "England Premier League", teams: "Arsenal vs Tottenham", tip: "BTTS-Yes", odds: "1.70", status: "PENDING" },
           { date: "16 Aug 2025", league: "England Premier League", teams: "Chelsea vs Crystal Palace", tip: "W1", odds: "1.75", status: "WON" },
-          { date: "15 Aug 2025", league: "England Premier League", teams: "Man United vs Liverpool", tip: "Over 2.5 Goals", odds: "1.75", status: "WON" },
-          { date: "15 Aug 2025", league: "Spain La Liga", teams: "Atletico Madrid vs Sevilla", tip: "Home Win", odds: "1.90", status: "PENDING" },
-          { date: "14 Aug 2025", league: "Germany Bundesliga", teams: "Leverkusen vs Stuttgart", tip: "Both Teams to Score", odds: "1.60", status: "WON" },
+          { date: "15 Aug 2025", league: "England Premier League", teams: "Man United vs Liverpool", tip: "Over 2.5", odds: "1.75", status: "WON" },
+          { date: "15 Aug 2025", league: "Spain La Liga", teams: "Atletico Madrid vs Sevilla", tip: "W2", odds: "1.90", status: "PENDING" },
+          { date: "14 Aug 2025", league: "Germany Bundesliga", teams: "Leverkusen vs Stuttgart", tip: "BTTS-No", odds: "1.60", status: "WON" },
           { date: "14 Aug 2025", league: "Italy Serie A", teams: "Roma vs Lazio", tip: "Draw", odds: "3.10", status: "LOST" },
-          { date: "14 Aug 2025", league: "France Ligue 1", teams: "Lyon vs Marseille", tip: "Over 2.5 Goals", odds: "1.85", status: "WON" },
-          { date: "13 Aug 2025", league: "Netherlands Eredivisie", teams: "Ajax vs PSV", tip: "Away Win", odds: "2.50", status: "PENDING" }
+          { date: "14 Aug 2025", league: "France Ligue 1", teams: "Lyon vs Marseille", tip: "Over 2.5", odds: "1.85", status: "WON" },
+          { date: "13 Aug 2025", league: "Netherlands Eredivisie", teams: "Ajax vs PSV", tip: "W2", odds: "2.50", status: "PENDING" }
         ];
         
         const vipTipsData = [
             { date: '16 Aug 2025', league: 'England Premier League', teams: 'Man City vs Fulham', tip: 'Home -2.5 AH', odds: '2.10', status: 'PENDING' },
-            { date: '16 Aug 2025', league: 'Italy Serie A', teams: 'Juventus vs Bologna', tip: 'Juventus to Win', odds: '1.80', status: 'PENDING' },
-            { date: '15 Aug 2025', league: 'UEFA Champions League', teams: 'Real Madrid vs Man City', tip: 'Real Madrid to Qualify', odds: '2.50', status: 'WON' },
-            { date: '15 Aug 2025', league: 'Spain La Liga', teams: 'Girona vs Villarreal', tip: 'Over 3.5 Goals', odds: '2.20', status: 'LOST' },
-            { date: '14 Aug 2025', league: 'Italy Serie A', teams: 'AC Milan vs Inter Milan', tip: 'Draw no Bet - Inter', odds: '1.80', status: 'WON' },
-            { date: '14 Aug 2025', league: 'Germany Bundesliga', teams: 'RB Leipzig vs Eintracht Frankfurt', tip: 'Both Teams to Score', odds: '1.65', status: 'WON' },
+            { date: '15 Aug 2025', league: 'Italy Serie A', teams: 'Juventus vs Bologna', tip: 'Juventus to Win', odds: '1.80', status: 'PENDING' },
+            { date: '14 Aug 2025', league: 'UEFA Champions League', teams: 'Real Madrid vs Man City', tip: 'Real Madrid to Qualify', odds: '2.50', status: 'WON' },
+            { date: '13 Aug 2025', league: 'Spain La Liga', teams: 'Girona vs Villarreal', tip: 'Over 3.5 Goals', odds: '2.20', status: 'LOST' },
+            { date: '12 Aug 2025', league: 'Italy Serie A', teams: 'AC Milan vs Inter Milan', tip: 'Draw no Bet - Inter', odds: '1.80', status: 'WON' },
+            { date: '11 Aug 2025', league: 'Germany Bundesliga', teams: 'RB Leipzig vs Eintracht Frankfurt', tip: 'Both Teams to Score', odds: '1.65', status: 'WON' },
         ];
 
         // --- SCRIPT TO RENDER A SINGLE TIP CARD ---
