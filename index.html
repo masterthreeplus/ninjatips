@@ -46,10 +46,13 @@
         .tab-button {
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
+            padding: 10px 16px;
         }
         .tab-button.active {
             color: var(--brand-blue);
             border-bottom-color: var(--brand-blue);
+            background-color: #111; /* Darker black for active tab */
+            border-radius: 6px 6px 0 0;
         }
         .tab-button:not(.active):hover {
             color: var(--brand-blue-light);
@@ -116,11 +119,11 @@
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Main Tab Navigation -->
         <div class="mb-6 border-b border-gray-700">
-            <nav class="flex justify-center -mb-px space-x-6" aria-label="Tabs">
-                <button id="free-tips-tab" class="tab-button active text-base font-semibold py-3 px-1">
+            <nav class="flex justify-center -mb-px space-x-2 sm:space-x-6 overflow-x-auto whitespace-nowrap">
+                <button id="free-tips-tab" class="tab-button active text-base font-semibold">
                     <i class="fas fa-globe mr-2"></i>Free Tips
                 </button>
-                <button id="vip-tips-tab" class="tab-button text-base font-semibold py-3 px-1">
+                <button id="vip-tips-tab" class="tab-button text-base font-semibold">
                     <i class="fas fa-star mr-2"></i>VIP Tips
                 </button>
             </nav>
@@ -221,7 +224,7 @@
                 case 'PENDING': statusClass = 'status-pending'; break;
             }
             return `
-                <div class="card-bg rounded-lg p-3 flex flex-wrap sm:flex-nowrap items-center justify-between gap-y-3">
+                <div class="card-bg rounded-lg p-4 flex flex-wrap sm:flex-nowrap items-center justify-between gap-y-3">
                     <div class="w-full sm:w-2/5 text-left">
                         <p class="text-xs text-gray-400 truncate"><i class="fas fa-trophy mr-1 text-brand-blue"></i>${tip.league}</p>
                         <p class="font-bold text-sm text-white">${tip.teams}</p>
