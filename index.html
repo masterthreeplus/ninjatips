@@ -169,16 +169,18 @@
 
             return `
                 <div class="card-bg rounded-lg p-4">
-                    <div class="flex justify-between items-center mb-3">
+                    <div class="flex justify-between items-center mb-4">
                         <h3 class="text-base font-orbitron font-bold text-brand-blue">${titlePrefix} - ${formatDate(earliestDateString)}</h3>
-                        <span class="status-badge ${dayStatusClass}">${dayStatus}</span>
                     </div>
                     <div class="space-y-3">
                         ${tipCardsHTML}
                     </div>
-                    <div class="border-t-2 border-brand-blue mt-4 pt-3 flex justify-end items-center space-x-2">
-                        <span class="text-sm font-bold text-white">Total Odds:</span>
-                        <span class="text-xl font-orbitron font-extrabold text-brand-blue">${totalOdds.toFixed(2)}</span>
+                    <div class="border-t-2 border-brand-blue mt-4 pt-3 flex justify-between items-center">
+                        <span class="status-badge ${dayStatusClass}">${dayStatus}</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm font-bold text-white">Total Odds:</span>
+                            <span class="text-xl font-orbitron font-extrabold text-brand-blue">${totalOdds.toFixed(2)}</span>
+                        </div>
                     </div>
                 </div>
             `;
