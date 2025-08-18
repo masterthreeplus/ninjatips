@@ -100,6 +100,21 @@
         /* Custom classes for JS to use */
         .text-brand-blue { color: var(--brand-blue); }
         .border-brand-blue { border-color: var(--brand-blue); }
+        
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #333;
+            border-radius: 50%;
+            border-top: 4px solid var(--brand-blue);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 40px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -142,14 +157,14 @@
                 <!-- Content for Single Tips -->
                 <div id="single-tip-content">
                     <div id="single-tips-container" class="space-y-6">
-                        <!-- Single tips will be dynamically inserted here -->
+                        <div class="loader"></div> <!-- Loading Spinner -->
                     </div>
                 </div>
 
                 <!-- Content for Safe Slips -->
                 <div id="safe-slip-content" class="hidden">
                     <div id="safe-slips-container" class="space-y-6">
-                        <!-- Safe slips (accumulators) will be dynamically inserted here -->
+                        <div class="loader"></div> <!-- Loading Spinner -->
                     </div>
                 </div>
             </section>
@@ -168,7 +183,7 @@
                     </a>
                 </div>
                 <div id="vip-accumulator-container" class="space-y-6">
-                    <!-- VIP Accumulator Tables will be dynamically inserted here -->
+                    <div class="loader"></div> <!-- Loading Spinner -->
                 </div>
             </section>
         </div>
@@ -178,44 +193,31 @@
     <footer class="border-t border-gray-800 mt-10 py-5">
         <div class="container mx-auto text-center text-gray-500 text-sm">
             <p>&copy; <span id="year"></span> Ninja Tips. All Rights Reserved.</p>
-            <p class="text-xs mt-1">ဘောလုံးခန့်မှန်းချက်များသည် 참고용으로만 အသုံးပြုသင့်ပါသည်။</p>
+            <div class="flex justify-center space-x-4 mt-3">
+                <a href="https://t.me/your_telegram_username" target="_blank" class="text-brand-blue hover:underline">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+                <a href="https://facebook.com/your_page" target="_blank" class="text-brand-blue hover:underline">
+                    <i class="fab fa-facebook"></i> Facebook
+                </a>
+            </div>
+            <p class="text-xs mt-3">ဘောလုံးခန့်မှန်းချက်များသည် 참고용으로만 အသုံးပြုသင့်ပါသည်။</p>
         </div>
     </footer>
 
     <script>
-        // --- MOCK DATA ---
-        // Helper: Format Date to "15 Aug 2025"
+        // --- CONFIGURATION ---
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxqCf7G-gJ03ZaG7aC3KN7BSQPuhGyJ5_AMzRI_4ljx4ShTryQRPcEQOId_u6USst2XlA/exec';
+
+        // --- HELPER FUNCTIONS ---
         function formatDate(dateStr) {
+            if (!dateStr) return '';
             const options = { day: "2-digit", month: "short", year: "numeric" };
-            return new Date(dateStr).toLocaleDateString("en-GB", options);
+            // Add a time component to prevent timezone issues where it might become the previous day
+            return new Date(dateStr + 'T00:00:00').toLocaleDateString("en-GB", options);
         }
 
-        const allTipsData = [
-            { date: "2025-08-17", league: "Spain La Liga", teams: "Barcelona vs Real Sociedad", tip: "Over 2.5 Goals", odds: "1.80", status: "PENDING" },
-            { date: "2025-08-16", league: "Germany Bundesliga", teams: "Bayern Munich vs Dortmund", tip: "Home Win", odds: "1.65", status: "PENDING" },
-            { date: "2025-08-16", league: "England Premier League", teams: "Chelsea vs Crystal Palace", tip: "W1", odds: "1.75", status: "WON" },
-            { date: "2025-08-15", league: "England Premier League", teams: "Man United vs Liverpool", tip: "Over 2.5 Goals", odds: "1.75", status: "WON" },
-            { date: "2025-08-15", league: "Spain La Liga", teams: "Atletico Madrid vs Sevilla", tip: "Home Win", odds: "1.90", status: "PENDING" },
-            { date: "2025-08-14", league: "Germany Bundesliga", teams: "Leverkusen vs Stuttgart", tip: "Both Teams to Score", odds: "1.60", status: "WON" },
-            { date: "2025-08-14", league: "Italy Serie A", teams: "Roma vs Lazio", tip: "Draw", odds: "3.10", status: "LOST" },
-        ];
-
-        const safeSlipsData = [
-            { date: '2025-08-16', league: 'England Premier League', teams: 'Chelsea vs Crystal Palace', tip: 'W1', odds: '1.75', status: 'WON' },
-            { date: '2025-08-16', league: 'Germany Bundesliga', teams: 'Leverkusen vs Stuttgart', tip: 'Over 2.5', odds: '1.60', status: 'WON' },
-            { date: '2025-08-15', league: 'England Premier League', teams: 'Man United vs Liverpool', tip: 'Over 2.5 Goals', odds: '1.75', status: 'WON' },
-            { date: '2025-08-15', league: 'France Ligue 1', teams: 'Lyon vs Marseille', tip: 'Over 2.5 Goals', odds: '1.85', status: 'WON' },
-        ];
-        
-        const vipTipsData = [
-            { date: '2025-08-16', league: 'England Premier League', teams: 'Man City vs Fulham', tip: 'Home -2.5 AH', odds: '2.10', status: 'PENDING' },
-            { date: '2025-08-16', league: 'Italy Serie A', teams: 'Juventus vs Bologna', tip: 'Juventus to Win', odds: '1.80', status: 'PENDING' },
-            { date: '2025-08-15', league: 'UEFA Champions League', teams: 'Real Madrid vs Man City', tip: 'Real Madrid to Qualify', odds: '2.50', status: 'WON' },
-            { date: '2025-08-15', league: 'Spain La Liga', teams: 'Girona vs Villarreal', tip: 'Over 3.5 Goals', odds: '2.20', status: 'LOST' },
-        ];
-
         // --- RENDER FUNCTIONS ---
-        // Card Responsive Fix
         function createTipCard(tip) {
             let statusClass = '';
             switch (tip.status.toUpperCase()) {
@@ -243,7 +245,7 @@
         }
 
         function createAccumulatorTable(date, tipsForDate, titlePrefix) {
-            const totalOdds = tipsForDate.reduce((acc, tip) => acc * parseFloat(tip.odds), 1);
+            const totalOdds = tipsForDate.reduce((acc, tip) => acc * parseFloat(tip.odds || 1), 1);
             let dayStatus = 'WON';
             let dayStatusClass = 'status-won';
             if (tipsForDate.some(tip => tip.status.toUpperCase() === 'LOST')) {
@@ -298,25 +300,59 @@
         }
 
         // --- MAIN SCRIPT ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Main Tabs
+        document.addEventListener('DOMContentLoaded', async () => {
+            // --- UI Elements ---
             const freeTipsTab = document.getElementById('free-tips-tab');
             const vipTipsTab = document.getElementById('vip-tips-tab');
             const freeTipsSection = document.getElementById('free-tips-section');
             const vipTipsSection = document.getElementById('vip-tips-section');
-
-            // Sub Tabs
             const singleTipSubTab = document.getElementById('single-tip-sub-tab');
             const safeSlipSubTab = document.getElementById('safe-slip-sub-tab');
             const singleTipContent = document.getElementById('single-tip-content');
             const safeSlipContent = document.getElementById('safe-slip-content');
 
-            // Render Single Tips (Updated)
-            function renderSingleTips() {
+            // --- Fetch and Render All Data ---
+            async function loadAllData() {
+                try {
+                    // Added cache: 'no-cache' to prevent the browser from using an old, failed response.
+                    const response = await fetch(API_URL, { redirect: 'follow', cache: 'no-cache' });
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const data = await response.json();
+
+                    renderSingleTips(data.singleTips || []);
+                    renderAccumulators('safe-slips-container', data.safeSlips || [], 'SAFE SLIP');
+                    renderAccumulators('vip-accumulator-container', data.vipTips || [], 'VIP');
+
+                } catch (error) {
+                    console.error("Error loading data:", error);
+                    // Updated error message to be more specific and helpful for debugging Apps Script issues.
+                    const errorMessage = `
+                        <div class="text-center text-red-400 p-4 card-bg rounded-lg">
+                            <p class="font-bold text-lg mb-2">API Error: Failed to Fetch Data</p>
+                            <p class="text-sm">ဒေတာများ ရယူ၍မရပါ၊ Apps Script တွင် ပြဿနာရှိနိုင်ပါသည်။</p>
+                            <ul class="text-xs text-left list-disc list-inside mt-3 text-gray-400">
+                                <li>Apps Script ကို "Deploy" > "New deployment" ဖြင့် deploy လုပ်ထားကြောင်း သေချာစစ်ဆေးပါ။</li>
+                                <li>Deployment settings တွင် "Who has access" ကို "Anyone" ဟု သတ်မှတ်ထားကြောင်း စစ်ဆေးပါ။</li>
+                                <li>Apps Script code ကို ပြင်ဆင်ပြီးတိုင်း "New deployment" အသစ် ပြန်လုပ်ရန် မမေ့ပါနှင့်။</li>
+                            </ul>
+                        </div>`;
+                    document.getElementById('single-tips-container').innerHTML = errorMessage;
+                    document.getElementById('safe-slips-container').innerHTML = errorMessage;
+                    document.getElementById('vip-accumulator-container').innerHTML = errorMessage;
+                }
+            }
+
+            // --- Render Functions ---
+            function renderSingleTips(data) {
                 const container = document.getElementById('single-tips-container');
                 container.innerHTML = '';
-                const groupedTips = allTipsData.reduce((acc, tip) => {
-                    (acc[tip.date] = acc[tip.date] || []).push(tip);
+                if (!data || data.length === 0) {
+                    container.innerHTML = `<p class="text-center text-gray-400">ခန့်မှန်းချက်များ မရှိသေးပါ။</p>`;
+                    return;
+                }
+                const groupedTips = data.reduce((acc, tip) => {
+                    const date = tip.date.split('T')[0]; // Ensure we only group by date part
+                    (acc[date] = acc[date] || []).push(tip);
                     return acc;
                 }, {});
                 const sortedDates = Object.keys(groupedTips).sort((a, b) => new Date(b) - new Date(a));
@@ -332,16 +368,16 @@
                 });
             }
 
-            // Render Accumulators (used for Safe Slips and VIP)
             function renderAccumulators(containerId, data, titlePrefix) {
                 const container = document.getElementById(containerId);
                 container.innerHTML = '';
-                if (data.length === 0) {
+                if (!data || data.length === 0) {
                     container.innerHTML = `<p class="text-center text-gray-400">ခန့်မှန်းချက်များ မရှိသေးပါ။</p>`;
                     return;
                 }
                 const groupedTips = data.reduce((acc, tip) => {
-                    (acc[tip.date] = acc[tip.date] || []).push(tip);
+                    const date = tip.date.split('T')[0]; // Ensure we only group by date part
+                    (acc[date] = acc[date] || []).push(tip);
                     return acc;
                 }, {});
                 const sortedDates = Object.keys(groupedTips).sort((a, b) => new Date(b) - new Date(a));
@@ -350,7 +386,7 @@
                 });
             }
 
-            // Main Tab Click Events
+            // --- Event Listeners ---
             freeTipsTab.addEventListener('click', () => {
                 freeTipsTab.classList.add('active');
                 vipTipsTab.classList.remove('active');
@@ -365,7 +401,6 @@
                 freeTipsSection.classList.add('hidden');
             });
 
-            // Sub Tab Click Events
             singleTipSubTab.addEventListener('click', () => {
                 singleTipSubTab.classList.add('active');
                 safeSlipSubTab.classList.remove('active');
@@ -380,12 +415,8 @@
                 singleTipContent.classList.add('hidden');
             });
 
-            // Initial Render
-            renderSingleTips();
-            renderAccumulators('safe-slips-container', safeSlipsData, 'SAFE SLIP');
-            renderAccumulators('vip-accumulator-container', vipTipsData, 'VIP');
-            
-            // Set current year in footer
+            // --- Initial Load ---
+            loadAllData();
             document.getElementById('year').textContent = new Date().getFullYear();
         });
     </script>
