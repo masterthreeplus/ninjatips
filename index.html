@@ -213,7 +213,6 @@
         function formatDate(dateStr) {
             if (!dateStr) return '';
             const options = { day: "2-digit", month: "short", year: "numeric" };
-            // Add a time component to prevent timezone issues where it might become the previous day
             return new Date(dateStr + 'T00:00:00').toLocaleDateString("en-GB", options);
         }
 
@@ -244,22 +243,27 @@
             `;
         }
 
-        function createAccumulatorTable(date, tipsForDate, titlePrefix) {
-            const totalOdds = tipsForDate.reduce((acc, tip) => acc * parseFloat(tip.odds || 1), 1);
+        function createAccumulatorTable(tipsForSlip, titlePrefix) {
+            const totalOdds = tipsForSlip.reduce((acc, tip) => acc * parseFloat(tip.odds || 1), 1);
             let dayStatus = 'WON';
             let dayStatusClass = 'status-won';
-            if (tipsForDate.some(tip => tip.status.toUpperCase() === 'LOST')) {
+            if (tipsForSlip.some(tip => tip.status.toUpperCase() === 'LOST')) {
                 dayStatus = 'LOST';
                 dayStatusClass = 'status-lost';
-            } else if (tipsForDate.some(tip => tip.status.toUpperCase() === 'PENDING')) {
+            } else if (tipsForSlip.some(tip => tip.status.toUpperCase() === 'PENDING')) {
                 dayStatus = 'PENDING';
                 dayStatusClass = 'status-pending';
             }
 
-            const tableRows = tipsForDate.map(tip => {
+            // **FIX:** Sort a copy of the tips by date to reliably find the earliest one for the title
+            const sortedTips = [...tipsForSlip].sort((a, b) => new Date(a.date) - new Date(b.date));
+            const earliestDateString = sortedTips.length > 0 ? sortedTips[0].date : null;
+
+            const tableRows = tipsForSlip.map(tip => {
                 const statusClass = `status-badge status-${tip.status.toLowerCase()}`;
                 return `
                     <tr class="border-b border-gray-700">
+                        <td class="py-2 px-2 text-xs text-gray-400">${formatDate(tip.date)}</td>
                         <td class="py-2 px-2 text-xs text-gray-400">${tip.league}</td>
                         <td class="py-2 px-2 text-xs font-semibold text-white">${tip.teams}</td>
                         <td class="py-2 px-2 text-xs font-bold text-brand-blue text-center">${tip.tip}</td>
@@ -272,13 +276,14 @@
             return `
                 <div class="card-bg rounded-lg p-4">
                     <div class="flex justify-between items-center mb-3">
-                        <h3 class="text-base font-orbitron font-bold text-brand-blue">${titlePrefix} - ${formatDate(date)}</h3>
+                        <h3 class="text-base font-orbitron font-bold text-brand-blue">${titlePrefix} - ${formatDate(earliestDateString)}</h3>
                         <span class="status-badge ${dayStatusClass}">${dayStatus}</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full min-w-full">
                             <thead>
                                 <tr class="text-left text-xs text-gray-400 uppercase">
+                                    <th class="pb-2 px-2 font-semibold">Date</th>
                                     <th class="pb-2 px-2 font-semibold">League</th>
                                     <th class="pb-2 px-2 font-semibold">Match</th>
                                     <th class="pb-2 px-2 font-semibold text-center">Tip</th>
@@ -289,7 +294,7 @@
                             <tbody>${tableRows}</tbody>
                             <tfoot>
                                 <tr class="border-t-2 border-brand-blue">
-                                    <td colspan="4" class="pt-2 px-2 text-sm font-bold text-white text-right">Total Odds:</td>
+                                    <td colspan="5" class="pt-2 px-2 text-sm font-bold text-white text-right">Total Odds:</td>
                                     <td class="pt-2 px-2 text-lg font-orbitron font-extrabold text-brand-blue text-center">${totalOdds.toFixed(2)}</td>
                                 </tr>
                             </tfoot>
@@ -314,7 +319,6 @@
             // --- Fetch and Render All Data ---
             async function loadAllData() {
                 try {
-                    // Added cache: 'no-cache' to prevent the browser from using an old, failed response.
                     const response = await fetch(API_URL, { redirect: 'follow', cache: 'no-cache' });
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const data = await response.json();
@@ -325,7 +329,6 @@
 
                 } catch (error) {
                     console.error("Error loading data:", error);
-                    // Updated error message to be more specific and helpful for debugging Apps Script issues.
                     const errorMessage = `
                         <div class="text-center text-red-400 p-4 card-bg rounded-lg">
                             <p class="font-bold text-lg mb-2">API Error: Failed to Fetch Data</p>
@@ -351,7 +354,7 @@
                     return;
                 }
                 const groupedTips = data.reduce((acc, tip) => {
-                    const date = tip.date.split('T')[0]; // Ensure we only group by date part
+                    const date = tip.date.split('T')[0];
                     (acc[date] = acc[date] || []).push(tip);
                     return acc;
                 }, {});
@@ -375,14 +378,21 @@
                     container.innerHTML = `<p class="text-center text-gray-400">ခန့်မှန်းချက်များ မရှိသေးပါ။</p>`;
                     return;
                 }
-                const groupedTips = data.reduce((acc, tip) => {
-                    const date = tip.date.split('T')[0]; // Ensure we only group by date part
-                    (acc[date] = acc[date] || []).push(tip);
+                const groupedBySlipId = data.reduce((acc, tip) => {
+                    const slipId = tip.slip_id || 'default-' + tip.date;
+                    (acc[slipId] = acc[slipId] || []).push(tip);
                     return acc;
                 }, {});
-                const sortedDates = Object.keys(groupedTips).sort((a, b) => new Date(b) - new Date(a));
-                sortedDates.forEach(date => {
-                    container.innerHTML += createAccumulatorTable(date, groupedTips[date], titlePrefix);
+
+                const sortedSlipIds = Object.keys(groupedBySlipId).sort((a, b) => {
+                    const dateA = new Date(groupedBySlipId[a][0].date);
+                    const dateB = new Date(groupedBySlipId[b][0].date);
+                    return dateB - dateA;
+                });
+                
+                sortedSlipIds.forEach(slipId => {
+                    const tipsForSlip = groupedBySlipId[slipId];
+                    container.innerHTML += createAccumulatorTable(tipsForSlip, titlePrefix);
                 });
             }
 
