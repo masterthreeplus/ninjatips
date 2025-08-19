@@ -6,10 +6,10 @@
     <title>Ninja Tips</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Orbitron for Title, Inter for Body -->
+    <!-- Google Fonts: Orbitron, Inter, and Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -21,6 +21,7 @@
         }
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #f1f1f1; }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .font-bebas { font-family: 'Bebas Neue', sans-serif; }
         .header-bg { background: linear-gradient(to right, #1a1a1a, #000000); border-bottom: 2px solid var(--brand-blue); }
         .card-bg { background-color: #1a1a1a; border: 1px solid #333; transition: all 0.3s ease; }
         .card-bg:hover { transform: translateY(-3px); box-shadow: 0 4px 12px var(--brand-blue-shadow); border-color: var(--brand-blue); }
@@ -33,6 +34,7 @@
         .status-won { background-color: #16a34a; color: white; }
         .status-lost { background-color: #dc2626; color: white; }
         .status-pending { background-color: var(--brand-blue); color: white; }
+        .status-refund { background-color: #f59e0b; color: white; } /* Amber color for Refund */
         .telegram-button { background-color: #229ED9; box-shadow: 0 4px 14px 0 rgba(0, 118, 163, 0.39); }
         .telegram-button:hover { background-color: #1a8cd8; }
         .vip-card { background: linear-gradient(145deg, #2a2a2a, #1a1a1a); border: 1px solid var(--brand-blue); box-shadow: 0 0 20px var(--brand-blue-shadow-vip); }
@@ -126,23 +128,19 @@
                 case 'WON': statusClass = 'status-won'; break;
                 case 'LOST': statusClass = 'status-lost'; break;
                 case 'PENDING': statusClass = 'status-pending'; break;
+                case 'REFUND': statusClass = 'status-refund'; break;
             }
             return `
                 <div class="card-bg rounded-lg p-4 flex flex-col space-y-3">
-                    <!-- Top Row -->
                     <div class="flex justify-between items-start">
                         <div class="text-left text-xs text-gray-400 font-bold">
                             <p><i class="fas fa-flag mr-1 text-brand-blue"></i> ${tip.country || ''} - ${tip.league || ''}</p>
                         </div>
                         <span class="status-badge ${statusClass}">${tip.status || ''}</span>
                     </div>
-
-                    <!-- Middle Row (Match) -->
                     <div class="text-center font-bold text-base text-white">
                         <p>${tip.home_team || ''} vs ${tip.away_team || ''}</p>
                     </div>
-
-                    <!-- Bottom Row -->
                     <div class="flex justify-between items-center text-sm">
                         <div class="font-semibold text-brand-blue">
                            <span class="text-base font-bold">${tip.tip || ''}</span>
@@ -156,10 +154,22 @@
         }
 
         function createSlipGroup(tipsForSlip, titlePrefix) {
-            const totalOdds = tipsForSlip.reduce((acc, tip) => acc * parseFloat(tip.odds || 1), 1);
+            const totalOdds = tipsForSlip.reduce((acc, tip) => {
+                if (String(tip.status || '').toUpperCase() === 'REFUND') {
+                    return acc * 1;
+                }
+                return acc * parseFloat(tip.odds || 1);
+            }, 1);
+
             let dayStatus = 'WON';
-            if (tipsForSlip.some(tip => String(tip.status || '').toUpperCase() === 'LOST')) dayStatus = 'LOST';
-            else if (tipsForSlip.some(tip => String(tip.status || '').toUpperCase() === 'PENDING')) dayStatus = 'PENDING';
+            const nonRefundedTips = tipsForSlip.filter(t => String(t.status || '').toUpperCase() !== 'REFUND');
+            if (nonRefundedTips.length === 0) {
+                dayStatus = 'REFUND';
+            } else if (nonRefundedTips.some(tip => String(tip.status || '').toUpperCase() === 'LOST')) {
+                dayStatus = 'LOST';
+            } else if (nonRefundedTips.some(tip => String(tip.status || '').toUpperCase() === 'PENDING')) {
+                dayStatus = 'PENDING';
+            }
             const dayStatusClass = `status-${dayStatus.toLowerCase()}`;
 
             const sortedTips = [...tipsForSlip].sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -170,7 +180,7 @@
             return `
                 <div class="card-bg rounded-lg p-4">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-base font-orbitron font-bold text-brand-blue">${titlePrefix} - ${formatDate(earliestDateString)}</h3>
+                        <h3 class="text-2xl font-bebas tracking-wider text-brand-blue">${titlePrefix} - ${formatDate(earliestDateString)}</h3>
                     </div>
                     <div class="space-y-3">
                         ${tipCardsHTML}
@@ -179,7 +189,7 @@
                         <span class="status-badge ${dayStatusClass}">${dayStatus}</span>
                         <div class="flex items-center space-x-2">
                             <span class="text-sm font-bold text-white">Total Odds:</span>
-                            <span class="text-xl font-orbitron font-extrabold text-brand-blue">${totalOdds.toFixed(2)}</span>
+                            <span class="text-3xl font-bebas tracking-wider text-brand-blue">${totalOdds.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>
