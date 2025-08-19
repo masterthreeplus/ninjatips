@@ -21,7 +21,7 @@
         }
         body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #f1f1f1; }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        .font-bebas { font-family: 'Bebas Neue', sans-serif; }
+        .font-bebas { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
         .header-bg { background: linear-gradient(to right, #1a1a1a, #000000); border-bottom: 2px solid var(--brand-blue); }
         .card-bg { background-color: #1a1a1a; border: 1px solid #333; transition: all 0.3s ease; }
         .card-bg:hover { transform: translateY(-3px); box-shadow: 0 4px 12px var(--brand-blue-shadow); border-color: var(--brand-blue); }
@@ -31,10 +31,14 @@
         .sub-tab-button { padding: 6px 12px; border-radius: 6px; background-color: transparent; color: #a1a1aa; font-weight: 500; transition: all 0.3s ease; }
         .sub-tab-button.active { background-color: var(--brand-blue); color: white; }
         .sub-tab-button:not(.active):hover { background-color: #27272a; }
+        /* Status Colors */
         .status-won { background-color: #16a34a; color: white; }
         .status-lost { background-color: #dc2626; color: white; }
         .status-pending { background-color: var(--brand-blue); color: white; }
-        .status-refund { background-color: #f59e0b; color: white; } /* Amber color for Refund */
+        .status-refund { background-color: #ca8a04; color: white; } /* Darker Yellow for Refund */
+        .status-50win { background: linear-gradient(90deg, #16a34a 50%, #ca8a04 50%); color: white; } /* Half Green, Half Yellow */
+        .status-50refund { background-color: #f97316; color: white; } /* Orange for 50% Refund/Loss */
+        
         .telegram-button { background-color: #229ED9; box-shadow: 0 4px 14px 0 rgba(0, 118, 163, 0.39); }
         .telegram-button:hover { background-color: #1a8cd8; }
         .vip-card { background: linear-gradient(145deg, #2a2a2a, #1a1a1a); border: 1px solid var(--brand-blue); box-shadow: 0 0 20px var(--brand-blue-shadow-vip); }
@@ -129,6 +133,8 @@
                 case 'LOST': statusClass = 'status-lost'; break;
                 case 'PENDING': statusClass = 'status-pending'; break;
                 case 'REFUND': statusClass = 'status-refund'; break;
+                case '50WIN': statusClass = 'status-50win'; break;
+                case '50REFUND': statusClass = 'status-50refund'; break;
             }
             return `
                 <div class="card-bg rounded-lg p-4 flex flex-col space-y-3">
@@ -155,19 +161,24 @@
 
         function createSlipGroup(tipsForSlip, titlePrefix) {
             const totalOdds = tipsForSlip.reduce((acc, tip) => {
-                if (String(tip.status || '').toUpperCase() === 'REFUND') {
+                const status = String(tip.status || '').toUpperCase();
+                const odd = parseFloat(tip.odds || 1);
+                if (status === 'REFUND') {
                     return acc * 1;
                 }
-                return acc * parseFloat(tip.odds || 1);
+                if (status === '50WIN') {
+                    return acc * ((odd - 1) / 2 + 1);
+                }
+                if (status === '50REFUND') {
+                    return acc * 0.5;
+                }
+                return acc * odd;
             }, 1);
 
             let dayStatus = 'WON';
-            const nonRefundedTips = tipsForSlip.filter(t => String(t.status || '').toUpperCase() !== 'REFUND');
-            if (nonRefundedTips.length === 0) {
-                dayStatus = 'REFUND';
-            } else if (nonRefundedTips.some(tip => String(tip.status || '').toUpperCase() === 'LOST')) {
+            if (tipsForSlip.some(tip => String(tip.status || '').toUpperCase() === 'LOST')) {
                 dayStatus = 'LOST';
-            } else if (nonRefundedTips.some(tip => String(tip.status || '').toUpperCase() === 'PENDING')) {
+            } else if (tipsForSlip.some(tip => String(tip.status || '').toUpperCase() === 'PENDING')) {
                 dayStatus = 'PENDING';
             }
             const dayStatusClass = `status-${dayStatus.toLowerCase()}`;
