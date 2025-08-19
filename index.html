@@ -127,8 +127,9 @@
         }
 
         function createTipCard(tip) {
+            const status = String(tip.status || '').toUpperCase();
             let statusClass = '';
-            switch (String(tip.status || '').toUpperCase()) {
+            switch (status) {
                 case 'WON': statusClass = 'status-won'; break;
                 case 'LOST': statusClass = 'status-lost'; break;
                 case 'PENDING': statusClass = 'status-pending'; break;
@@ -136,6 +137,16 @@
                 case '50WIN': statusClass = 'status-50win'; break;
                 case '50REFUND': statusClass = 'status-50refund'; break;
             }
+
+            let displayOdd = tip.odds;
+            const originalOdd = parseFloat(tip.odds || 1);
+
+            if (status === '50WIN') {
+                displayOdd = (((originalOdd - 1) / 2) + 1).toFixed(2);
+            } else if (status === '50REFUND') {
+                displayOdd = '0.50';
+            }
+
             return `
                 <div class="card-bg rounded-lg p-4 flex flex-col space-y-3">
                     <div class="flex justify-between items-start">
@@ -152,7 +163,7 @@
                            <span class="text-base font-bold">${tip.tip || ''}</span>
                         </div>
                         <div class="font-bold text-gray-300">
-                            Odds: <span class="text-white">${tip.odds || ''}</span>
+                            Odds: <span class="text-white">${displayOdd || ''}</span>
                         </div>
                     </div>
                 </div>
