@@ -3,7 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ninja Tips</title>
+    <title>Ninja Tips - နေ့စဉ် ဘောလုံးခန့်မှန်းချက်များ</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Ninja Tips တွင် နေ့စဉ် အခမဲ့နှင့် VIP ဘောလုံးခန့်မှန်းချက်များ၊ Safe Slip များနှင့် နောက်ဆုံးရ ပွဲစဉ်ရလဒ်များကို ရယူလိုက်ပါ။">
+    <meta name="keywords" content="football tips, betting tips, soccer predictions, ninja tips, ဘောလုံး, ခန့်မှန်းချက်, မောင်း, free tips, vip tips">
+
+    <!-- Open Graph Meta Tags (for Facebook, Telegram, etc.) -->
+    <meta property="og:title" content="Ninja Tips - နေ့စဉ် ဘောလုံးခန့်မှန်းချက်များ">
+    <meta property="og:description" content="Ninja Tips တွင် နေ့စဉ် အခမဲ့နှင့် VIP ဘောလုံးခန့်မှန်းချက်များ၊ Safe Slip များနှင့် နောက်ဆုံးရ ပွဲစဉ်ရလဒ်များကို ရယူလိုက်ပါ။">
+    <meta property="og:image" content="https://masterthreeplus.github.io/ninjatips/icon/Logo.png">
+    <meta property="og:url" content="https://your-website-url.com"> <!-- Replace with your actual website URL -->
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ninja Tips - နေ့စဉ် ဘောလုံးခန့်မှန်းချက်များ">
+    <meta name="twitter:description" content="Ninja Tips တွင် နေ့စဉ် အခမဲ့နှင့် VIP ဘောလုံးခန့်မှန်းချက်များ၊ Safe Slip များနှင့် နောက်ဆုံးရ ပွဲစဉ်ရလဒ်များကို ရယူလိုက်ပါ။">
+    <meta name="twitter:image" content="https://masterthreeplus.github.io/ninjatips/icon/Logo.png">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Orbitron, Inter, and Bebas Neue -->
@@ -54,9 +72,17 @@
     <!-- Header Section -->
     <header class="header-bg shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-start h-16">
+            <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <img src="https://masterthreeplus.github.io/ninjatips/icon/Logo.png" alt="Ninja Tips Logo" class="h-12">
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="https://t.me/your_telegram_username" target="_blank" class="text-gray-400 hover:text-brand-blue transition-colors duration-300">
+                        <i class="fab fa-telegram fa-lg"></i>
+                    </a>
+                    <a href="https://facebook.com/your_page" target="_blank" class="text-gray-400 hover:text-brand-blue transition-colors duration-300">
+                        <i class="fab fa-facebook fa-lg"></i>
+                    </a>
                 </div>
             </div>
         </div>
@@ -97,8 +123,19 @@
                  <div class="vip-card rounded-lg p-6 text-center mb-6">
                     <i class="fas fa-crown text-4xl text-yellow-400 mb-3"></i>
                     <h2 class="text-2xl font-bold font-orbitron text-white mb-2">VIP Member Access</h2>
-                    <p class="text-gray-300 text-sm max-w-xl mx-auto mb-5">VIP အဖွဲ့ဝင်ဖြစ်ခြင်းဖြင့် ပိုမိုတိကျသေချာသော ခန့်မှန်းချက်များ၊ အကောင်းဆုံး Odds များနှင့် အထူးပွဲစဉ်များကို နေ့စဉ် ရယူလိုက်ပါ။</p>
-                    <a href="https://t.me/your_telegram_username" target="_blank" class="telegram-button text-white font-bold py-2 px-5 rounded-lg inline-flex items-center"><i class="fab fa-telegram-plane mr-2"></i><span>Join VIP Now</span></a>
+                    <p class="text-gray-300 text-sm max-w-xl mx-auto mb-4">Get access to more accurate predictions, the best odds, and exclusive matches daily by becoming a VIP member.</p>
+                    <div class="mt-4 text-center">
+                        <p class="text-gray-400 text-xs mb-3">We accept payments via:</p>
+                        <div class="flex flex-col items-center space-y-2 text-white font-bebas tracking-wider">
+                            <span class="bg-gray-700 px-4 py-2 rounded-md text-lg w-48">Binance Pay</span>
+                            <span class="bg-gray-700 px-4 py-2 rounded-md text-lg w-48">Payeer</span>
+                        </div>
+                        <div class="flex justify-center space-x-4 text-white font-bebas tracking-wider mt-4">
+                            <span class="bg-gray-700 px-4 py-2 rounded-md text-lg">$25 per Month</span>
+                            <span class="bg-gray-700 px-4 py-2 rounded-md text-lg">$2 per Slip</span>
+                        </div>
+                    </div>
+                    <a href="https://t.me/your_telegram_username" target="_blank" class="telegram-button text-white font-bold py-2 px-5 rounded-lg inline-flex items-center mt-6"><i class="fab fa-telegram-plane mr-2"></i><span>Join VIP Now</span></a>
                 </div>
                 <div id="vip-accumulator-container" class="space-y-6"><div class="loader"></div></div>
             </section>
@@ -109,10 +146,6 @@
     <footer class="border-t border-gray-800 mt-10 py-5">
         <div class="container mx-auto text-center text-gray-500 text-sm">
             <p>&copy; <span id="year"></span> Ninja Tips. All Rights Reserved.</p>
-            <div class="flex justify-center space-x-4 mt-3">
-                <a href="https://t.me/your_telegram_username" target="_blank" class="text-brand-blue hover:underline"><i class="fab fa-telegram"></i> Telegram</a>
-                <a href="https://facebook.com/your_page" target="_blank" class="text-brand-blue hover:underline"><i class="fab fa-facebook"></i> Facebook</a>
-            </div>
             <p class="text-xs mt-3">ဘောလုံးခန့်မှန်းချက်များသည် 참고용으로만 အသုံးပြုသင့်ပါသည်။</p>
         </div>
     </footer>
@@ -202,7 +235,7 @@
             return `
                 <div class="card-bg rounded-lg p-4">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-2xl font-bebas tracking-wider text-brand-blue">${titlePrefix} - ${formatDate(earliestDateString)}</h3>
+                        <h3 class="text-xl font-bebas tracking-wider text-brand-blue">${titlePrefix} - ${formatDate(earliestDateString)}</h3>
                     </div>
                     <div class="space-y-3">
                         ${tipCardsHTML}
@@ -211,7 +244,7 @@
                         <span class="status-badge ${dayStatusClass}">${dayStatus}</span>
                         <div class="flex items-center space-x-2">
                             <span class="text-sm font-bold text-white">Total Odds:</span>
-                            <span class="text-3xl font-bebas tracking-wider text-brand-blue">${totalOdds.toFixed(2)}</span>
+                            <span class="text-2xl font-bebas tracking-wider text-brand-blue">${totalOdds.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>
@@ -304,13 +337,4 @@
                 singleTipContent.classList.remove('hidden'); safeSlipContent.classList.add('hidden');
             });
             safeSlipSubTab.addEventListener('click', () => {
-                safeSlipSubTab.classList.add('active'); singleTipSubTab.classList.remove('active');
-                safeSlipContent.classList.remove('hidden'); singleTipContent.classList.add('hidden');
-            });
-
-            loadAllData();
-            document.getElementById('year').textContent = new Date().getFullYear();
-        });
-    </script>
-</body>
-</html>
+                safeSlipSubTab.classList.add('acti
