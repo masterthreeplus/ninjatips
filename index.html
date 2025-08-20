@@ -68,8 +68,7 @@
     </style>
 </head>
 <body class="antialiased">
-
-    <!-- Header Section -->
+<!-- Header Section -->
     <header class="header-bg shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -202,115 +201,6 @@
                 </div>
             `;
         }
-
-        function createSlipGroup(tipsForSlip, titlePrefix) {
-            const totalOdds = tipsForSlip.reduce((acc, tip) => {
-                const status = String(tip.status || '').toUpperCase();
-                const odd = parseFloat(tip.odds || 1);
-                if (status === 'REFUND') {
-                    return acc * 1;
-                }
-                if (status === '50WIN') {
-                    return acc * ((odd - 1) / 2 + 1);
-                }
-                if (status === '50REFUND') {
-                    return acc * 0.5;
-                }
-                return acc * odd;
-            }, 1);
-
-            let dayStatus = 'WON';
-            if (tipsForSlip.some(tip => String(tip.status || '').toUpperCase() === 'LOST')) {
-                dayStatus = 'LOST';
-            } else if (tipsForSlip.some(tip => String(tip.status || '').toUpperCase() === 'PENDING')) {
-                dayStatus = 'PENDING';
-            }
-            const dayStatusClass = `status-${dayStatus.toLowerCase()}`;
-
-            const sortedTips = [...tipsForSlip].sort((a, b) => new Date(a.date) - new Date(b.date));
-            const earliestDateString = sortedTips.length > 0 ? sortedTips[0].date : null;
-            
-            const tipCardsHTML = sortedTips.map(createTipCard).join('');
-
-            return `
-                <div class="card-bg rounded-lg p-4">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-bebas tracking-wider text-brand-blue">${titlePrefix} - ${formatDate(earliestDateString)}</h3>
-                    </div>
-                    <div class="space-y-3">
-                        ${tipCardsHTML}
-                    </div>
-                    <div class="border-t-2 border-brand-blue mt-4 pt-3 flex justify-between items-center">
-                        <span class="status-badge ${dayStatusClass}">${dayStatus}</span>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-bold text-white">Total Odds:</span>
-                            <span class="text-2xl font-bebas tracking-wider text-brand-blue">${totalOdds.toFixed(2)}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            const freeTipsTab = document.getElementById('free-tips-tab');
-            const vipTipsTab = document.getElementById('vip-tips-tab');
-            const freeTipsSection = document.getElementById('free-tips-section');
-            const vipTipsSection = document.getElementById('vip-tips-section');
-            const singleTipSubTab = document.getElementById('single-tip-sub-tab');
-            const safeSlipSubTab = document.getElementById('safe-slip-sub-tab');
-            const singleTipContent = document.getElementById('single-tip-content');
-            const safeSlipContent = document.getElementById('safe-slip-content');
-
-            async function loadAllData() {
-                try {
-                    const response = await fetch(API_URL, { redirect: 'follow', cache: 'no-cache' });
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    const data = await response.json();
-                    renderSingleTips(data.singleTips || []);
-                    renderAccumulators('safe-slips-container', data.safeSlips || [], 'SAFE SLIP');
-                    renderAccumulators('vip-accumulator-container', data.vipTips || [], 'VIP');
-                } catch (error) {
-                    console.error("Error loading data:", error);
-                    const errorMessage = `<div class="text-center text-red-400 p-4 card-bg rounded-lg"><p class="font-bold text-lg mb-2">API Error</p><p class="text-sm">ဒေတာများ ရယူ၍မရပါ၊ Apps Script ကို မှန်ကန်စွာ Deploy လုပ်ထားကြောင်း စစ်ဆေးပါ။</p></div>`;
-                    document.getElementById('single-tips-container').innerHTML = errorMessage;
-                    document.getElementById('safe-slips-container').innerHTML = errorMessage;
-                    document.getElementById('vip-accumulator-container').innerHTML = errorMessage;
-                }
-            }
-
-            function renderSingleTips(data) {
-                const container = document.getElementById('single-tips-container');
-                container.innerHTML = '';
-                if (!data || data.length === 0) {
-                    container.innerHTML = `<p class="text-center text-gray-400">ခန့်မှန်းချက်များ မရှိသေးပါ။</p>`;
-                    return;
-                }
-                const groupedTips = data.reduce((acc, tip) => {
-                    const date = tip.date.split('T')[0];
-                    (acc[date] = acc[date] || []).push(tip);
-                    return acc;
-                }, {});
-                const sortedDates = Object.keys(groupedTips).sort((a, b) => new Date(b) - new Date(a));
-                sortedDates.forEach(date => {
-                    const dateSection = document.createElement('section');
-                    dateSection.innerHTML = `
-                        <h2 class="text-base font-semibold text-gray-300 mb-2 pl-1">${formatDate(date)}</h2>
-                        <div class="space-y-3">${groupedTips[date].map(createTipCard).join('')}</div>
-                    `;
-                    container.appendChild(dateSection);
-                });
-            }
-
-            function renderAccumulators(containerId, data, titlePrefix) {
-                const container = document.getElementById(containerId);
-                container.innerHTML = '';
-                if (!data || data.length === 0) {
-                    container.innerHTML = `<p class="text-center text-gray-400">ခန့်မှန်းချက်များ မရှိသေးပါ။</p>`;
-                    return;
-                }
-                const groupedBySlipId = data.reduce((acc, tip) => {
-                    const slipId = tip.slip_id || `default-${tip.date}`;
                     (acc[slipId] = acc[slipId] || []).push(tip);
                     return acc;
                 }, {});
@@ -337,4 +227,13 @@
                 singleTipContent.classList.remove('hidden'); safeSlipContent.classList.add('hidden');
             });
             safeSlipSubTab.addEventListener('click', () => {
-                safeSlipSubTab.classList.add('acti
+                safeSlipSubTab.classList.add('active'); singleTipSubTab.classList.remove('active');
+                safeSlipContent.classList.remove('hidden'); singleTipContent.classList.add('hidden');
+            });
+
+            loadAllData();
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
