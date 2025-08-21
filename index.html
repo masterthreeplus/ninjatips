@@ -101,7 +101,8 @@
                 </button>
             </nav>
         </div>
-<!-- Tips Sections -->
+
+        <!-- Tips Sections -->
         <div id="tips-content">
             <!-- Free Tips Section -->
             <section id="free-tips-section">
@@ -125,9 +126,13 @@
                     <p class="text-gray-300 text-sm max-w-xl mx-auto mb-4">Get access to more accurate predictions, the best odds, and exclusive matches daily by becoming a VIP member.</p>
                     <div class="mt-4 text-center">
                         <p class="text-gray-400 text-xs mb-3">We accept payments via:</p>
-                        <div class="flex flex-col items-center space-y-2 text-white font-bebas tracking-wider">
-                            <span class="bg-gray-700 px-4 py-2 rounded-md text-lg w-48">Binance Pay</span>
-                            <span class="bg-gray-700 px-4 py-2 rounded-md text-lg w-48">Payeer</span>
+                        <div class="flex flex-col items-center space-y-2">
+                            <div class="bg-gray-700 p-2 rounded-md w-48 flex justify-center">
+                                <img src="https://masterthreeplus.github.io/ninjatips/icon/binance.png" alt="Binance Pay Logo" class="h-8">
+                            </div>
+                            <div class="bg-gray-700 p-2 rounded-md w-48 flex justify-center">
+                                <img src="https://masterthreeplus.github.io/ninjatips/icon/payeer.png" alt="Payeer Logo" class="h-8">
+                            </div>
                         </div>
                         <div class="flex justify-center space-x-4 text-white font-bebas tracking-wider mt-4">
                             <span class="bg-gray-700 px-4 py-2 rounded-md text-lg">$25 per Month</span>
@@ -140,7 +145,8 @@
             </section>
         </div>
     </main>
-<!-- Footer -->
+
+    <!-- Footer -->
     <footer class="border-t border-gray-800 mt-10 py-5">
         <div class="container mx-auto text-center text-gray-500 text-sm">
             <p>&copy; <span id="year"></span> Ninja Tips. All Rights Reserved.</p>
@@ -200,7 +206,8 @@
                 </div>
             `;
         }
-function createSlipGroup(tipsForSlip, titlePrefix) {
+
+        function createSlipGroup(tipsForSlip, titlePrefix) {
             const totalOdds = tipsForSlip.reduce((acc, tip) => {
                 const status = String(tip.status || '').toUpperCase();
                 const odd = parseFloat(tip.odds || 1);
@@ -247,7 +254,9 @@ function createSlipGroup(tipsForSlip, titlePrefix) {
                 </div>
             `;
         }
-document.addEventListener('DOMContentLoaded', async () => {
+
+
+        document.addEventListener('DOMContentLoaded', async () => {
             const freeTipsTab = document.getElementById('free-tips-tab');
             const vipTipsTab = document.getElementById('vip-tips-tab');
             const freeTipsSection = document.getElementById('free-tips-section');
