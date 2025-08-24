@@ -5,30 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ninja Tips - နေ့စဉ် ဘောလုံးခန့်မှန်းချက်များ</title>
 
-    <!-- SEO Meta Tags -->
     <meta name="description" content="Ninja Tips တွင် နေ့စဉ် အခမဲ့နှင့် VIP ဘောလုံးခန့်မှန်းချက်များ၊ Safe Slip များနှင့် နောက်ဆုံးရ ပွဲစဉ်ရလဒ်များကို ရယူလိုက်ပါ။">
     <meta name="keywords" content="football tips, betting tips, soccer predictions, ninja tips, ဘောလုံး, ခန့်မှန်းချက်, မောင်း, free tips, vip tips">
 
-    <!-- Open Graph Meta Tags (for Facebook, Telegram, etc.) -->
     <meta property="og:title" content="Ninja Tips - နေ့စဉ် ဘောလုံးခန့်မှန်းချက်များ">
     <meta property="og:description" content="Ninja Tips တွင် နေ့စဉ် အခမဲ့နှင့် VIP ဘောလုံးခန့်မှန်းချက်များ၊ Safe Slip များနှင့် နောက်ဆုံးရ ပွဲစဉ်ရလဒ်များကို ရယူလိုက်ပါ။">
     <meta property="og:image" content="https://masterthreeplus.github.io/ninjatips/icon/Logo.png">
-    <meta property="og:url" content="https://your-website-url.com"> <!-- Replace with your actual website URL -->
-    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-website-url.com"> <meta property="og:type" content="website">
 
-    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ninja Tips - နေ့စဉ် ဘောလုံးခန့်မှန်းချက်များ">
     <meta name="twitter:description" content="Ninja Tips တွင် နေ့စဉ် အခမဲ့နှင့် VIP ဘောလုံးခန့်မှန်းချက်များ၊ Safe Slip များနှင့် နောက်ဆုံးရ ပွဲစဉ်ရလဒ်များကို ရယူလိုက်ပါ။">
     <meta name="twitter:image" content="https://masterthreeplus.github.io/ninjatips/icon/Logo.png">
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Orbitron, Inter, and Bebas Neue -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -69,7 +62,6 @@
 </head>
 <body class="antialiased">
 
-    <!-- Header Section -->
     <header class="header-bg shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -88,9 +80,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <!-- Main Tab Navigation -->
         <div class="mb-6 border-b border-gray-700">
             <nav class="flex justify-center -mb-px space-x-2 sm:space-x-6 overflow-x-auto whitespace-nowrap">
                 <button id="free-tips-tab" class="tab-button active text-base font-semibold">
@@ -102,9 +92,7 @@
             </nav>
         </div>
 
-        <!-- Tips Sections -->
         <div id="tips-content">
-            <!-- Free Tips Section -->
             <section id="free-tips-section">
                 <div class="mb-5 flex justify-center p-1 bg-gray-800 rounded-lg max-w-xs mx-auto">
                     <button id="single-tip-sub-tab" class="sub-tab-button active w-1/2 text-sm">Single Tip</button>
@@ -118,7 +106,6 @@
                 </div>
             </section>
 
-            <!-- VIP Tips Section -->
             <section id="vip-tips-section" class="hidden">
                  <div class="vip-card rounded-lg p-6 text-center mb-6">
                     <i class="fas fa-crown text-4xl text-yellow-400 mb-3"></i>
@@ -146,7 +133,6 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="border-t border-gray-800 mt-10 py-5">
         <div class="container mx-auto text-center text-gray-500 text-sm">
             <p>&copy; <span id="year"></span> Ninja Tips. All Rights Reserved.</p>
@@ -196,8 +182,8 @@
                         <p>${tip.home_team || ''} vs ${tip.away_team || ''}</p>
                     </div>
                     <div class="flex justify-between items-center text-sm">
-                        <div class="font-semibold text-brand-blue">
-                           <span class="font-bold">${tip.tip || ''}</span>
+                        <div class="text-brand-blue">
+                           <span class="text-sm">${tip.tip || ''}</span>
                         </div>
                         <div class="font-bold text-gray-300">
                             Odds: <span class="text-white">${displayOdd || ''}</span>
